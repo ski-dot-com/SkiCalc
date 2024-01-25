@@ -1,0 +1,51 @@
+source("@controll"),
+source("@compare"),
+source("@bool"),
+def(command),
+def(tape)=dict(0),
+def(head)=0,
+def(main)={
+    def(i)=args[0],
+    def(tmp)=len(command),
+    def(depth)=0,
+    for({},{lt(i,tmp)},{i+=1},{
+        def(c)=command[i],
+        if(eq(c,"["),{
+            if(and(not(depth),tape[head]),{
+                main(i+1),i-=1
+            },{
+                depth+=1
+            }),
+        }),
+        if(eq(c,"]"),{
+            if(not(depth),{i=tmp}),
+            depth-=1,
+        }),
+        if(not(depth),{
+            if(eq(c,"+"),{
+                tape[head]+=1,
+                tape[head]%=256,
+            }),
+            if(eq(c,"-"),{
+                tape[head]-=1,
+                tape[head]%=256,
+            }),
+            if(eq(c,">"),{
+                head+=1,
+            }),
+            if(eq(c,"<"),{
+                head-=1,
+            }),
+            if(eq(c,"."),{
+                print(tape[head]),
+            }),
+            if(eq(c,","),{
+                tape[head]=ask_num("input (0~255): "),
+                tape[head]%=256,
+            }),
+        })
+    }),
+},
+while({len(command=ask_str("bfi> "))},{
+    main(0),
+})
