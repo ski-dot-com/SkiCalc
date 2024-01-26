@@ -7,6 +7,23 @@ from operator import add, eq,sub,mul,truediv as div,mod,floordiv,pow,neg,pos
 from functools import wraps
 from traceback import print_exc
 import argparse as ap
+import sys
+
+i=31
+while True:
+	try:sys.setrecursionlimit(2**i)
+	except Exception:break
+	i+=1
+max_=0
+while i>=0:
+	i-=1
+	tmp=max_+2**i
+	try:
+		sys.setrecursionlimit(tmp)
+	except Exception:
+		pass
+	else:
+		max_=tmp
 
 ap_main=ap.ArgumentParser(description="拡張しまくった計算機(インタプリタ)です。")
 ap_main.add_argument("code",nargs="?",default=None, help="実行するファイル。なければREPL(普通の電卓)として起動。")
@@ -558,8 +575,7 @@ def import_(path:str,src:bool=False):
 		path=os.path.abspath(os.path.join(lib_dir,path[1:]))
 	else:
 		path=os.path.abspath(os.path.join(local_dir,path))
-	if not os.path.exists(path):
-		path+=".sc"
+	path=[tmp for suf in ["",".skicalc",".sc"]for tmp in [path+suf] if os.path.exists(tmp)][0]
 	if not src:
 		old_local_dir,local_dir=local_dir,os.path.dirname(path)
 		old_global_scope,global_scope=global_scope,{}
