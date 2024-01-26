@@ -536,16 +536,20 @@ def repr_code(tokens:list[int|float|str]):
 					stack.append(s.replace('"','""')[1:]+'"')
 	return ", ".join(stack)
 def repr_print(v:StackItem):
-	print(repr_(v))
-def repr_(v:StackItem):
+	print(repr_(v,True))
+SPECIAL_VALUE_DISC_DICT={
+	0: "偽orなし",
+	1: "真",
+}
+def repr_(v:StackItem,readable:bool=False):
 	if isinstance(v,(Ref,UndefinedNameRef)):return repr_(as_value(v))
-	if isinstance(v,str):return '"'+v.replace('"','""')+'"'
+	if isinstance(v,str):return '"'+v.replace('"','""')+'"'+(f" (「{v}」)" if readable else "")
 	if isinstance(v,list):return f'[{", ".join(repr_(i)for i in v)}]'
 	if isinstance(v,defaultdict):
 		tmp=repr_(v.default_factory()) # type: ignore
 		return f'dict({", ".join((*(repr_(k)+","+repr_(v)for k,v in v.items() if not(isinstance(v,Ref)and v.unbound_error_message is not None)),tmp))})'
 	if isinstance(v,dict):return f'dict({", ".join(repr_(k)+","+repr_(v)for k,v in v.items() if not(isinstance(v,Ref)and v.unbound_error_message is not None))})'
-	return str(v)
+	return str(v) +(f" ({SPECIAL_VALUE_DISC_DICT[v]})" if readable and v in SPECIAL_VALUE_DISC_DICT else "")
 local_dir:str=os.path.dirname(__file__)
 lib_dir:str=os.path.join(local_dir,"lib")
 def import_(path:str,src:bool=False):
@@ -620,7 +624,7 @@ def main():
 		code=os.path.abspath(code)
 		local_dir=os.path.dirname(code)
 		with open(code) as c:
-			try:print("実行結果: "+repr_(eval_(parse(tokenize(c.read())))))
+			try:print("実行結果: "+repr_(eval_(parse(tokenize(c.read()))), True))
 			except ValueError:pass
 			except NameError: pass
 	else:
