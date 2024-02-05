@@ -34,3 +34,8 @@ py 03_interpreter.py [ファイル] [-h] [-s ソースファイル ソースフ�
 
 ### bfi.sc
 とある有名な難解プログラミング言語のインタプリタです。
+[03_interpreter.py](#03_interpreter.py)で実行してください。
+
+### hello_world.sc
+「Hello, World」と表示するプログラムです。
+[03_interpreter.py](#03_interpreter.py)で実行してください。
