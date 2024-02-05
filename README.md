@@ -33,9 +33,9 @@ py 03_interpreter.py [ファイル] [-h] [-s ソースファイル ソースフ�
 書きかけです。関数の引数はargsというなまえのに格納されます。
 
 ### bfi.sc
-とある有名な難解プログラミング言語のインタプリタです。
+[巷で有名な難解プログラミング言語](https://ja.wikipedia.org/w/index.php?title=Brainfuck&oldid=84551968)のインタプリタです。
 [03_interpreter.py](#03_interpreter.py)で実行してください。
 
 ### hello_world.sc
-「Hello, World」と表示するプログラムです。
+「Hello, world!」と表示するプログラムです。
 [03_interpreter.py](#03_interpreter.py)で実行してください。
